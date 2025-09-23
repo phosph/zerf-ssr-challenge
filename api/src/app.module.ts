@@ -2,7 +2,10 @@ import fastifyEnv from '@fastify/env';
 import wsPlugin from '@fastify/websocket';
 import type { JSONSchemaType } from 'ajv';
 import fp from 'fastify-plugin';
+import cors from '@fastify/cors'
+
 import dbPlugin from './repositories/db-config.ts'
+import paymentRoutes from './routes/payment.routes.ts'
 
 interface Env {
     PORT: number,
@@ -33,4 +36,7 @@ export default fp(async function appModule(appInstance) {
     appInstance.register(wsPlugin)
     await appInstance.register(fastifyEnv, { schema: EnvSchema, dotenv: true })
     appInstance.register(dbPlugin)
+    appInstance.register(cors)
+    
+    appInstance.register(paymentRoutes)
 })

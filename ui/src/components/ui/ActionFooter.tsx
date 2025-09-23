@@ -1,4 +1,4 @@
-import { useElementSize } from '../hooks/useElementSize'
+import { useElementSize } from '../../app/hooks/useElementSize'
 import styles from './ActionFooter.module.css'
 
 /**

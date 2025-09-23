@@ -1,9 +1,11 @@
 'use client'
 
-import TipOption, { customAmount, type ITipOptionProps } from '@/app/ui/TipOption'
-import GreetingsHeader from '../ui/GreetingsHeader'
-import PaymentButtons from '../ui/PaymentButtons'
-import { useState } from 'react'
+import TipOption, { customAmount, type ITipOptionProps } from '@/components/ui/TipOption'
+import { useRouter } from 'next/navigation'
+import { StrictMode, useState } from 'react'
+import PaymentButtons from '../../components/payment/PaymentButtons'
+import GreetingsHeader from '../../components/ui/GreetingsHeader'
+
 
 type IAmountOption = Pick<ITipOptionProps, 'label' | 'amount' | 'emoji'>
 
@@ -31,6 +33,9 @@ const options: IAmountOption[] = [
 ]
 
 export default function SelectTip() {
+    const router = useRouter()
+
+
     const [amount, setAmount] = useState<number | null>(null)
     const days = 6;
     const totalAmount = amount ? amount * days : null;
@@ -44,7 +49,7 @@ export default function SelectTip() {
     }
 
     return (
-        <>
+        <StrictMode>
             <GreetingsHeader days={days} />
             <ul className="flex flex-col gap-2 p-4">
                 {options.map((opt, index) =>
@@ -56,7 +61,7 @@ export default function SelectTip() {
                     />
                 )}
             </ul>
-            <PaymentButtons amount={totalAmount} />
-        </>
+            <PaymentButtons showApplePayButton amount={totalAmount} onPayWithCard={() => router.push("/tips/pay-with-card")} />
+        </StrictMode>
     )
 }
