@@ -1,0 +1,10 @@
+@reference "tailwindcss";
+
+.idk {
+    box-shadow: 0px -4px 6px 4px #1018280F;
+    @apply p-4 fixed bottom-0 left-0 w-[100vw] bg-[#FDFDFD] rounded-t-2xl px-4 pt-5 pb-8;
+}
+
+.placeholder {
+    height: var(--el-height);
+}

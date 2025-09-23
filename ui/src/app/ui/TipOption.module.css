@@ -1,0 +1,44 @@
+@reference "tailwindcss";
+
+.unknown-amount {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-bottom: 2px solid currentcolor;
+}
+
+.amount-option-button {
+    flex: 1;
+    border: 1px solid var(--border-color); /* TODO: border color como variable */
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+
+    --border-color: #BDC5CB;
+    --bg-color: transparent;
+
+    @apply py-2 px-5 gap-2 rounded-xl;
+
+    &:hover {
+        --border-color: #2C93CB;
+    }
+
+    &.selected {
+        --border-color: #2C93CB;
+        --bg-color: #EEF9FF;
+    }
+    
+    &:active {
+        --bg-color: hsl(from #EEF9FF h s calc(l - 2));
+    }
+
+
+    & .amount-block {
+        background-color: #D5EFF7;
+        color: #2376A2; /* blue-700 */
+        @apply  rounded-lg w-[106px] h-10 inline-flex items-center justify-center gap-1;
+    }
+}

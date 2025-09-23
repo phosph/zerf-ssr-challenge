@@ -1,5 +1,6 @@
 {
     "files.associations": {
         ".gmrc": "jsonc"
-    }
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
 }
