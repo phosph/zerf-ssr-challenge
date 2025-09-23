@@ -1,0 +1,27 @@
+networks:
+  inter-tier:
+
+volumes:
+  db_dev-ephimeral_data:
+    driver: local
+    driver_opts:
+      type: 'tmpfs'
+      device: 'tmpfs'
+      o: 'size=500m'
+
+services:
+  db-dev:
+    image: postgres:17.5-alpine
+    restart: unless-stopped
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+    env_file:
+      - ./.env
+    networks:
+      - inter-tier
+    ports:
+      - "5432:5432"
+    expose:
+        - 5432
+    volumes:
+      - db_dev-ephimeral_data:/var/lib/postgresql/data

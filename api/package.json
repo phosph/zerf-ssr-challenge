@@ -1,0 +1,36 @@
+{
+  "name": "zerf-ssr-challenge-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db-migrate": "graphile-migrate migrate",
+    "dev": "node main.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^22",
+    "@types/pg": "^8.15.5",
+    "@types/ws": "^8.18.1",
+    "eslint": "^9",
+    "fastify-cli": "^7.4.0",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@fastify/env": "^5.0.2",
+    "@fastify/postgres": "^6.0.2",
+    "@fastify/swagger": "^9.5.1",
+    "@fastify/swagger-ui": "^5.2.3",
+    "@fastify/websocket": "^11.2.0",
+    "ajv": "^8.17.1",
+    "fastify": "^5.6.1",
+    "fastify-plugin": "^5.0.1",
+    "graphile-migrate": "^1.4.1",
+    "pg": "^8.16.3",
+    "toad-scheduler": "^3.1.0"
+  }
+}
