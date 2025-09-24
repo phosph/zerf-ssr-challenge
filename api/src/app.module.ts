@@ -1,34 +1,16 @@
+import cors from '@fastify/cors';
 import fastifyEnv from '@fastify/env';
 import wsPlugin from '@fastify/websocket';
-import type { JSONSchemaType } from 'ajv';
 import fp from 'fastify-plugin';
-import cors from '@fastify/cors'
 
-import dbPlugin from './repositories/db-config.ts'
-import paymentRoutes from './routes/payment.routes.ts'
-
-interface Env {
-    PORT: number,
-    DATABASE_URL: string
-}
+import dbPlugin from './repositories/db-config.ts';
+import paymentRoutes from './routes/payment.routes.ts';
+import { EnvSchema, type Env } from './env.ts';
 
 
 declare module 'fastify' {
-  interface FastifyInstance {
-    config: Env;
-  }
-}
-
-const EnvSchema: JSONSchemaType<Env> = {
-    type: 'object',
-    required: ['PORT', 'DATABASE_URL'],
-    properties: {
-        PORT: {
-            type: 'number',
-        },
-        DATABASE_URL: {
-            type: 'string',
-        }
+    interface FastifyInstance {
+        config: Env;
     }
 }
 
@@ -37,6 +19,6 @@ export default fp(async function appModule(appInstance) {
     await appInstance.register(fastifyEnv, { schema: EnvSchema, dotenv: true })
     appInstance.register(dbPlugin)
     appInstance.register(cors)
-    
+
     appInstance.register(paymentRoutes)
 })
