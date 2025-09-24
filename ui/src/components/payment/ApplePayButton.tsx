@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from 'next/image';
-import { useApplePayAvailability } from "../../app/hooks/useApplePayAvailability";
+import { useApplePayAvailability } from "../../hooks/useApplePayAvailability";
 
 export interface IApplePayButtonProps {
     disabled?: boolean
