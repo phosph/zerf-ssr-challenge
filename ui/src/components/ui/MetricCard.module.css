@@ -1,0 +1,32 @@
+.metrict-card-wrapper {
+    flex-basis: 218px;
+}
+.metrict-card {
+    display: grid;
+    grid-template:
+        "label icon"  auto
+        "value icon " auto /
+        auto 32px
+    ;
+    gap: 8;
+
+    & > .label {
+        grid-area: label;
+        color: #667482;
+    }
+    & > .value {
+        grid-area: value;
+        color: #3E464F;
+        font-weight: 500;
+    }
+    & > .icon {
+        grid-area: icon;
+        background-color: #E0F4FF;
+        align-self: center;
+        justify-self: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        padding: 4px;
+    }
+}
