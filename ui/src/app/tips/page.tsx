@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { StrictMode, useState } from 'react'
 import PaymentButtons from '../../components/payment/PaymentButtons'
 import GreetingsHeader from '../../components/ui/GreetingsHeader'
+import { currencyFromNaturalNumber } from 'common/currency-utils.js'
+import type { CurrencyAmount } from 'common/dashboard/types'
 
 
 type IAmountOption = Pick<ITipOptionProps, 'label' | 'amount' | 'emoji'>
@@ -13,17 +15,17 @@ const options: IAmountOption[] = [
     {
         label: "Good",
         emoji: '/emoji-good.png',
-        amount: 5
+        amount: currencyFromNaturalNumber(5)
     },
     {
         label: "Great",
         emoji: '/emoji-great.png',
-        amount: 10
+        amount: currencyFromNaturalNumber(10)
     },
     {
         label: "Excellent",
         emoji: '/emoji-excellent.png',
-        amount: 15
+        amount: currencyFromNaturalNumber(15)
     },
     {
         label: "Custom",
@@ -36,9 +38,9 @@ export default function SelectTip() {
     const router = useRouter()
 
 
-    const [amount, setAmount] = useState<number | null>(null)
+    const [amount, setAmount] = useState<CurrencyAmount | null>(null)
     const days = 6;
-    const totalAmount = amount ? amount * days : null;
+    const totalAmount: CurrencyAmount | null = amount ? amount * days : null;
 
     const onAmountSelected = ({ amount }: IAmountOption) => {
         if (amount === customAmount) {

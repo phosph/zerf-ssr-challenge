@@ -1,18 +1,9 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import type { DashboardFilters, PaymentStats } from "common/dashboard/types";
 
-// TODO: use shared lib
-export interface PaymentStats {
-    totalTips: number;
-    transactionAmount: number
-    averageTips: number;
-}
-
-export interface DashboardFilters {
-    startDate: string;
-    endDate?: string;
-}
+export { type DashboardFilters }
 
 export function useRealtimeStats(filters: DashboardFilters | null) {
     const [stats, setStats] = useState<PaymentStats | null>(null);

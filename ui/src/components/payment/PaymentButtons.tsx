@@ -6,9 +6,11 @@ import ActionFooter from "../ui/ActionFooter";
 import ApplePayButton from "./ApplePayButton";
 import type { MouseEventHandler } from "react";
 import { Loader2Icon } from "lucide-react"
+import { currencyFormat } from "common/currency-utils.js";
+import type { CurrencyAmount } from "common/dashboard/types";
 
 export interface IPaymentButtonsProps {
-    amount: number | null;
+    amount: CurrencyAmount | null;
     /** @default {false} */
     showApplePayButton?: boolean
     onPayWithCard: MouseEventHandler<HTMLButtonElement>
@@ -23,7 +25,7 @@ export default function PaymentButtons({ amount, showApplePayButton = false, onP
         <ActionFooter className="flex flex-col gap-4 min-h-40">
             <div className="flex justify-between">
                 <span>Total Tip</span>
-                <span>USD ${amount ?? '--'}</span>
+                <span>USD {amount ? currencyFormat(amount) : '$--'}</span>
             </div>
             {showApplePayButton && <ApplePayButton disabled={disablePayment} />}
             <Button variant="outline" disabled={disablePayment} onClick={onPayWithCard} type="button">

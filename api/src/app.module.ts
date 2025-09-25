@@ -1,14 +1,13 @@
 import cors from '@fastify/cors';
 import fastifyEnv from '@fastify/env';
-import fp from 'fastify-plugin';
 import pgFastify from '@fastify/postgres';
 import wsPlugin from '@fastify/websocket';
+import fp from 'fastify-plugin';
 
-// import dbPlugin from './common/db-config.ts';
-import paymentRoutes from './tip-payment/payment.routes.ts';
+import { webSocketManager, type WebSocketManager } from './common/WebSocketManager.ts';
 import dashboardRoutes from './dashboard/dashboard.routes.ts';
 import { EnvSchema, type Env } from './env.ts';
-import { webSocketManager, type WebSocketManager } from './common/WebSocketManager.ts';
+import paymentRoutes from './tip-payment/payment.routes.ts';
 
 
 declare module 'fastify' {
@@ -25,7 +24,6 @@ export default fp(async function appModule(appInstance) {
     appInstance.register(wsPlugin);
     appInstance.decorate('wsManager', webSocketManager);
 
-    // appInstance.register(dbPlugin)
     appInstance.register(pgFastify, {
         connectionString: appInstance.config.DATABASE_URL,
     })

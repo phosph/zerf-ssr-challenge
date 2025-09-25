@@ -1,5 +1,5 @@
 import type { PoolClient } from "pg";
-import type { ICharge } from "../Shift4Payment.service";
+import type { ICharge } from "common/dashboard/types";
 
 export class CheckoutRepository {
     readonly #pg: PoolClient

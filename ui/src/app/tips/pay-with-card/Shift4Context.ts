@@ -1,5 +1,7 @@
 import type { ICarfFormRef } from "@/components/payment/CardForm";
 import { TipPaymentSession, type IPerformPaymentBody } from "@/services/top-payment.service";
+import { deserialice } from "common/currency-utils.js";
+import type { CurrencyAmount } from "common/dashboard/types";
 import { createContext, useContext, useRef, useState, type FormEventHandler } from "react";
 
 export const Shift4Context = createContext<Shift4Object | null>(null)
@@ -40,7 +42,7 @@ const formToPaymentBody = (form: HTMLFormElement): IPerformPaymentBody => {
     const data = new FormData(form)
     const body:  IPerformPaymentBody = {
         country: data.get('country') as string,
-        amount: Number(data.get('amount')),
+        amount: deserialice(data.get('amount') as string),
     }
 
     // TODO: add validation

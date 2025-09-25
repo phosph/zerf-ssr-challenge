@@ -3,7 +3,7 @@ import fp from 'fastify-plugin';
 import type { Env } from '../env.ts';
 import { type ITipPyamentBody, tipPaymentSchema } from './tip-payment-body.schema.ts';
 import { Shift4PaymentService } from '../common/Shift4Payment.service.ts';
-import { CheckoutRepository } from '../common/repositories/Checkouts.repository..ts';
+import { CheckoutRepository } from '../common/repositories/Checkouts.repository.ts';
 
 export default fp(function paymentRoutesPlugin(appInstance) {
     appInstance.post(

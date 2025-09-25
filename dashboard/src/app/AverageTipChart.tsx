@@ -3,13 +3,10 @@
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
-  CardContent
-} from "@/components/ui/card"
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
+    type ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
 } from "@/components/ui/chart"
 
 export const description = "A linear line chart"

@@ -1,11 +1,7 @@
-export interface IPerformPaymentBody {
-    country: string;
-    amount: number;
-}
+import type { ITipPyamentBody as IPerformPaymentBodyComplete } from 'common/dashboard/types'
 
-interface IPerformPaymentBodyComplete extends IPerformPaymentBody {
-    tokenId: string;
-}
+export type IPerformPaymentBody = Omit<IPerformPaymentBodyComplete, "tokenId">
+
 
 export const tipPayment = (body: IPerformPaymentBodyComplete) => {
     return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/tip/payment`, {

@@ -7,9 +7,10 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useShift4Form } from "./Shift4Context";
 import { useRouter } from 'next/navigation'
+import { currencyFromNaturalNumber, serialice } from "common/currency-utils.js";
 
 export default function PayWithCard() {
-    const totalAmount = 30; // TODO
+    const totalAmount: number = currencyFromNaturalNumber(30); // TODO
     const { shift4Obj, carfFormRef, formRef, onSubmit, loading } = useShift4Form()
     const router = useRouter()
 
@@ -27,7 +28,7 @@ export default function PayWithCard() {
                         <h2 className="font-medium text-base">Card</h2>
                     </div>
                     {shift4Obj ? <CardForm shift4Obj={shift4Obj} ref={carfFormRef} /> : null}
-                    <input type="hidden" name="amount" value={totalAmount} />
+                    <input type="hidden" name="amount" value={serialice(totalAmount)} />
                 </div>
                 <PaymentButtons
                     amount={totalAmount}

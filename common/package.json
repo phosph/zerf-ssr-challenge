@@ -1,0 +1,38 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "description": "",
+  "files": [
+    "dist"
+  ],
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tsc": "tsc",
+    "compile": "tsc -b tsconfig.json",
+    "precompile": "pnpm clean",
+    "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+    "postinstall": "pnpm compile"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "bignumber.js": "^9.3.1"
+  },
+  "peerDependencies": {
+    "bignumber.js": "^9.3.1"
+  },
+  "exports": {
+    "./currency-utils.js": {
+      "types": "./dist/currency-utils.d.ts",
+      "default": "./dist/currency-utils.js"
+    },
+    "./dashboard/types": {
+      "types": "./dist/dashboard/types.d.ts",
+      "default": "./dist/dashboard/types.js"
+    }
+  }
+}

@@ -1,7 +1,9 @@
 'use client'
 
+import { currencyFormat } from "common/currency-utils.js";
 import styles from "./TipOption.module.css";
 import Image from 'next/image'
+import type { CurrencyAmount } from "common/dashboard/types";
 
 export const customAmount = Symbol("custom amount")
 
@@ -10,7 +12,7 @@ export interface ITipOptionProps {
     emoji: string;
     label: string;
     selected?: boolean;
-    amount: number | typeof customAmount;
+    amount: CurrencyAmount | typeof customAmount;
     [x: `aria-${string}`]: string;
     role?: string
 }
@@ -35,10 +37,10 @@ export function TipOption({
                 <span className="font-medium">{label}</span>
             </div>
             <div className={styles["amount-block"]}>
-                <span className="font-medium text-xl">${
+                <span className="font-medium text-xl">{
                     amount === customAmount
-                        ? (<span className={`${styles["unknown-amount"]}`}></span>)
-                        : amount
+                        ? (<>$<span className={`${styles["unknown-amount"]}`}></span></>)
+                        : currencyFormat(amount)
                 }</span>
                 <span className="font-light">/</span>
                 <span className="font-light">day</span>

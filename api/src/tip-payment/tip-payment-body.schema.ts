@@ -1,11 +1,8 @@
 import type { JSONSchemaType } from "ajv";
+import { MIN_CURRENCY_AMOUNT } from "common/currency-utils.js";
+import type { ITipPyamentBody } from 'common/dashboard/types'
 
-export interface ITipPyamentBody {
-    tokenId: string;
-    country: string;
-    amount: number;
-}
-
+export { type ITipPyamentBody }
 
 export const tipPaymentSchema: JSONSchemaType<ITipPyamentBody> = {
     type: "object",
@@ -18,7 +15,8 @@ export const tipPaymentSchema: JSONSchemaType<ITipPyamentBody> = {
             type: "string"
         },
         "amount": {
-            type: "integer"
+            type: "integer",
+            minimum: MIN_CURRENCY_AMOUNT
         }
     }
 }

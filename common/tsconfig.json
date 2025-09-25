@@ -1,17 +1,20 @@
 {
   "include": [
-    "./main.ts",
     "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
   ],
   "compilerOptions": {
-    "module": "NodeNext",
-    "erasableSyntaxOnly": true,
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "module": "esnext",
+    "isolatedModules": true,
     "strict": true,
     "target": "es2022",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "lib": [
@@ -19,13 +22,6 @@
     ],
     "resolveJsonModule": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true
-  },
-  "references": [
-    {
-      "path": "../common/tsconfig.json"
-    }
-  ]
+  }
 }

@@ -1,6 +1,8 @@
-import type { Env } from "../env";
-import type { ITipPyamentBody } from "../tip-payment/tip-payment-body.schema";
-import type { CheckoutRepository } from "./repositories/Checkouts.repository.";
+import type { Env } from "../env.ts";
+import type { ITipPyamentBody } from "../tip-payment/tip-payment-body.schema.ts";
+import type { CheckoutRepository } from "./repositories/Checkouts.repository.ts";
+import type { ICharge } from "common/dashboard/types";
+
 
 export interface IShift4Charge {
     id: string;
@@ -12,15 +14,6 @@ export interface IShift4Charge {
     currency: string;
     type: string;
     description: string;
-    status: "successful" | "pending" | "failed"
-}
-
-export interface ICharge {
-    id?: string;
-    chargeExternalId: string
-    created: number; // timestamp
-    amount: number; // integer
-    currency: string;
     status: "successful" | "pending" | "failed"
 }
 
