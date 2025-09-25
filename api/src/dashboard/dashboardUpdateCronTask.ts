@@ -1,18 +1,19 @@
 import type { FastifyInstance } from "fastify"
 import { AsyncTask, SimpleIntervalJob } from "toad-scheduler"
-import { PaymentStatsService } from "./paymet-stats.service.ts"
+import { PaymentStatsService } from "./payment-stats.service.ts"
 import type { WebSocketManager } from "../common/WebSocketManager.ts"
+import { ChargesRepository } from "../common/repositories/charges.repository.ts"
 
 export function createDashboardUpdateCronTask(db: FastifyInstance['pg'], socketManager: WebSocketManager) {
 
     const task = new AsyncTask(
         'simple task',
         async () => {
-            if (!socketManager.hasClientes) return;
+            if (!socketManager.hasClients) return;
 
             const client = await db.connect()
             try {
-                const statsService = new PaymentStatsService(client);
+                const statsService = new PaymentStatsService(new ChargesRepository(client));
 
                 const generalStats = await statsService.getStats();
                 const generalStatsPayload = JSON.stringify(generalStats);

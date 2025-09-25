@@ -1,7 +1,21 @@
-import type { Env } from "../env.ts";
-import type { ITipPyamentBody } from "../tip-payment/tip-payment-body.schema.ts";
-import type { CheckoutRepository } from "./repositories/Checkouts.repository.ts";
 import type { ICharge } from "common/dashboard/types";
+import type { Env } from "../env.ts";
+import type { ITipPaymentBody } from "../tip-payment/tip-payment-body.schema.ts";
+import type { ChargesRepository } from "./repositories/charges.repository.ts";
+import { normalizeCharge } from "./utils/normalizeCharge.ts";
+
+export interface IShift4ErrorResponse {
+    error: {
+        type:
+        | "invalid_request"
+        | "card_error"
+        | "gateway_error"
+        | "rate_limit_error";
+        code?: string;
+        message: string;
+        chargeId?: string;
+    }
+}
 
 
 export interface IShift4Charge {
@@ -20,10 +34,10 @@ export interface IShift4Charge {
 export class Shift4PaymentService {
     readonly #baseUrl: string
     readonly #privateKey: string
-    readonly repository: CheckoutRepository
+    readonly repository: ChargesRepository
 
 
-    constructor(config: Env, repository: CheckoutRepository) {
+    constructor(config: Env, repository: ChargesRepository) {
         ({
             SHIFT4_URL: this.#baseUrl,
             SHIFT4_PRIVATE_KEY: this.#privateKey,
@@ -32,10 +46,14 @@ export class Shift4PaymentService {
         this.repository = repository
     }
 
+    get #authHeader() {
+        return `Basic ${Buffer.from(`${this.#privateKey}:`).toString("base64")}`
+    }
 
-    async charge(payload: ITipPyamentBody): Promise<ICharge> {
 
-        const chargeRequesPayload = {
+    async charge(payload: ITipPaymentBody): Promise<ICharge> {
+
+        const chargeRequestPayload = {
             amount: payload.amount,
             currency: 'USD',
             type: 'customer_initiated',
@@ -44,40 +62,55 @@ export class Shift4PaymentService {
 
         const resp = await fetch(`${this.#baseUrl}/charges`, {
             method: 'POST',
-            body: JSON.stringify(chargeRequesPayload),
+            body: JSON.stringify(chargeRequestPayload),
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Basic ${Buffer.from(`${this.#privateKey}:`).toString("base64")}`
+                Authorization: this.#authHeader
             }
         });
 
         if (!resp.ok) {
             // If the response is not successful, throw an error to be caught by the route handler
-            const errorBody = await resp.json() as any;
-            // TODO get chargeId from error response
+            const errorBody = await resp.json() as IShift4ErrorResponse;
+
+            if (errorBody.error.chargeId) {
+                const shift4Charge = await this.getCharge(errorBody.error.chargeId)
+                await this.registerCharge(shift4Charge)
+            }
+
             console.debug(errorBody)
             throw new Error(errorBody.error?.message || 'Shift4 API request failed');
         }
 
         const shift4Charge = await resp.json() as IShift4Charge
-        console.debug(shift4Charge)
-        const charge: ICharge = this._normaliceCharge(shift4Charge)
-        
-        charge.id = await this.repository.registerCharge(charge)
 
-        console.debug(charge)
+        const charge: ICharge = await this.registerCharge(shift4Charge)
         
+        console.debug(charge)
+
         return charge
     }
 
+    async getCharge(shift4ChargeId: string): Promise<IShift4Charge> {
+        const resp = await fetch(`${this.#baseUrl}/charges/${shift4ChargeId}`, {
+            method: 'GET',
+            headers: { Authorization: this.#authHeader }
+        })
 
-    private _normaliceCharge(charge: IShift4Charge): ICharge {
-        return {
-            chargeExternalId: charge.id,
-            created: charge.created,
-            amount: charge.amount,
-            currency: charge.currency,
-            status: charge.status
+        if (!resp.ok) {
+            throw await resp.json() as IShift4ErrorResponse
         }
+
+        return resp.json() as Promise<IShift4Charge>
     }
+
+    protected async registerCharge(shift4Charge: IShift4Charge): Promise<ICharge> {
+        const charge: ICharge = normalizeCharge(shift4Charge)
+
+        charge.id = await this.repository.registerCharge(charge)
+
+        return charge;
+    }
+
+
 }

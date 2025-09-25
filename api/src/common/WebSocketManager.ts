@@ -1,5 +1,5 @@
+import type { DashboardFilters } from 'common/dashboard/types';
 import { WebSocket } from 'ws';
-import type { DashboardFilters } from '../dashboard/paymet-stats.service.ts';
 
 export interface ClientState {
     filters?: DashboardFilters;
@@ -8,7 +8,7 @@ export interface ClientState {
 export class WebSocketManager {
     private clients: Map<WebSocket, ClientState> = new Map();
 
-    public get hasClientes(): boolean {
+    public get hasClients(): boolean {
         return this.clients.size > 0;
     }
 

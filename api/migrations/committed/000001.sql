@@ -1,5 +1,5 @@
 --! Previous: -
---! Hash: sha1:feda3ebb07309da74d9b17bae07cbde4796622c1
+--! Hash: sha1:e2a7b88f28198c7ebceba12f3c0bba32f03d8543
 
 -- Enter migration here
 
@@ -9,5 +9,6 @@ create table charges (
     charge_external_id TEXT UNIQUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     amount INTEGER,
+    payment_type TEXT,
     status TEXT
 );

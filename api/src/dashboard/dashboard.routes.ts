@@ -1,7 +1,8 @@
-import fp from 'fastify-plugin'
-import { type DashboardFilters, PaymentStatsService } from './paymet-stats.service.ts';
-import fastifySchedule from '@fastify/schedule'
+import fastifySchedule from '@fastify/schedule';
+import type { DashboardFilters } from 'common/dashboard/types';
+import fp from 'fastify-plugin';
 import { createDashboardUpdateCronTask } from './dashboardUpdateCronTask.ts';
+import { PaymentStatsService } from './payment-stats.service.ts';
 
 export default fp(function dashboardRoutesPlugin(appInstance) {
     appInstance.register(fastifySchedule);
