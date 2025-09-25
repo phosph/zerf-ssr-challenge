@@ -14,13 +14,17 @@ export const currencyFormat = (value: CurrencyAmount): string => {
     return `$${new BigNumber(value).div(100).toFixed()}`
 }
 
+export const currencyToFloat = (value: CurrencyAmount): number => {
+    return new BigNumber(value).div(100).toNumber()
+}
 
-export const serialice = (value: CurrencyAmount): string => {
+
+export const serialize = (value: CurrencyAmount): string => {
     return value.toString()
 }
 
 // TODO: review
-export const deserialice = (value: string): CurrencyAmount => {
+export const deserialize = (value: string): CurrencyAmount => {
     return new BigNumber(value).toNumber()
 }
 

@@ -1,9 +1,10 @@
 'use client'
 
+import type { AverageTipsSet, DashboardFilters, PaymentStats } from "common/dashboard/types";
+import { eachDayOfInterval, parseJSON } from "date-fns";
 import { useEffect, useState } from "react";
-import type { DashboardFilters, PaymentStats } from "common/dashboard/types";
 
-export { type DashboardFilters }
+export { type DashboardFilters };
 
 export function useRealtimeStats(filters: DashboardFilters | null) {
     const [stats, setStats] = useState<PaymentStats | null>(null);
@@ -19,6 +20,7 @@ export function useRealtimeStats(filters: DashboardFilters | null) {
         ws.addEventListener('message', (event: MessageEvent<string>) => {
             const newStats: PaymentStats = JSON.parse(event.data);
             console.log('Received stats update:', newStats);
+            completeChartData(newStats)
             setStats(newStats);
         });
 
@@ -45,4 +47,51 @@ export function useRealtimeStats(filters: DashboardFilters | null) {
     }, [socket, filters])
 
     return stats;
+}
+
+
+function completeChartData(dataSet: AverageTipsSet,): void {
+    const { averageTipsSet: { dateRange, list } } = dataSet
+    const { startDate, endDate } = dateRange
+    const startDateParsed = parseJSON(startDate)
+    const endDateParsed = parseJSON(endDate)
+
+    if (!dataSet.averageTipsSet.list.length) {
+        dataSet.averageTipsSet.list = eachDayOfInterval({ start: startDateParsed, end: endDateParsed })
+            .map((day) => ({ day, averageTips: 0 }))
+    } else {
+
+        dataSet.averageTipsSet.list = list.flatMap((obj, index) => {
+            const day: Date = obj.day = obj.day instanceof Date ? obj.day : parseJSON(obj.day)
+
+            if (!index) {
+                return [
+                    ...eachDayOfInterval({ start: startDateParsed, end: day })
+                        .slice(0, -2)
+                        .map((day) => ({ day, averageTips: 0 })),
+                    obj
+                ]
+            }
+
+            if (index === list.length - 1) {
+                return [
+                    obj,
+                    ...eachDayOfInterval({ start: day, end: endDateParsed })
+                        .slice(1)
+                        .map((day) => ({ day, averageTips: 0 })),
+                ]
+            }
+
+            const prevObj = list[index - 1]
+            const prevDay: Date = prevObj.day instanceof Date ? prevObj.day : parseJSON(prevObj.day)
+
+            return [
+                prevObj,
+                ...eachDayOfInterval({ start: prevDay, end: day })
+                    .slice(1, -2)
+                    .map((day) => ({ day, averageTips: 0 })),
+                obj
+            ]
+        })
+    }
 }

@@ -27,7 +27,7 @@ export function StatsFilter({ onFilterChange, currentFilters }: { onFilterChange
     )
 }
 
-const predefinedFilterOptioons = [
+const predefinedFilterOptions = [
     {
         label: "Today",
         value: (): DateRange => {
@@ -90,7 +90,7 @@ const predefinedFilterOptioons = [
 function StatsFilterPopover({ onFilterChange, currentFilters }: { onFilterChange: (filters: DashboardFilters | null) => void, currentFilters?: DashboardFilters | null }) {
     const [dateRange, setDateRange] = useState<DateRange | undefined>(
         () => {
-            if (!currentFilters) return predefinedFilterOptioons[4].value();
+            if (!currentFilters) return predefinedFilterOptions[4].value();
 
             return {
                 from: parseISO(currentFilters.startDate),
@@ -104,7 +104,7 @@ function StatsFilterPopover({ onFilterChange, currentFilters }: { onFilterChange
             <div className="flex">
                 <div className="border-r pt-4">
                     <ul className="flex flex-col gap-1">
-                        {predefinedFilterOptioons.map((option, index) => (
+                        {predefinedFilterOptions.map((option, index) => (
                             <li key={index}>
                                 <Button type="button" variant="ghost" className="flex w-full justify-start" onClick={() => setDateRange(option.value())}>
                                     {option.label}
