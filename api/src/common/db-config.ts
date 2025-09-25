@@ -5,4 +5,4 @@ export default fp(function dbCOnfigPlugin(appInstance) {
     appInstance.register(pgFastify, {
         connectionString: appInstance.config.DATABASE_URL,
     })
-})
+}, { encapsulate: false })

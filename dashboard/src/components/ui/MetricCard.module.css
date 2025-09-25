@@ -1,23 +1,26 @@
-.metrict-card-wrapper {
-    flex-basis: 218px;
-}
 .metrict-card {
+    padding-block: 8px;
+    padding-inline: 16px;
+
+    flex-basis: 218px;
     display: grid;
     grid-template:
         "label icon"  auto
         "value icon " auto /
         auto 32px
     ;
-    gap: 8;
+    column-gap: 8px;
 
     & > .label {
         grid-area: label;
         color: #667482;
+        font-size: 14px;
     }
     & > .value {
         grid-area: value;
         color: #3E464F;
         font-weight: 500;
+        font-size: 16px;
     }
     & > .icon {
         grid-area: icon;

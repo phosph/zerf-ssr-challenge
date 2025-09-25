@@ -1,15 +1,9 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+  CardContent
 } from "@/components/ui/card"
 import {
   type ChartConfig,
@@ -38,12 +32,11 @@ const chartConfig = {
 
 export function AverageTipChart() {
   return (
-    <Card className="flex-1">
-      <CardHeader>
-        <CardTitle>Line Chart - Linear</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <article className="card flex-1">
+      <header className="text-[#2F363C] font-medium py-3 px-6 border-b border-[#DDE1E4]">
+        <h5>Average tip</h5>
+      </header>
+      <div className="p-4">
         <ChartContainer config={chartConfig}>
           <LineChart
             accessibilityLayer
@@ -72,17 +65,14 @@ export function AverageTipChart() {
               strokeWidth={2}
               dot={false}
             />
+            <YAxis
+              dataKey="desktop"
+              tickLine={false}
+              axisLine={false}
+            />
           </LineChart>
         </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </article>
   )
 }
