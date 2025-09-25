@@ -8,7 +8,7 @@ import type { CurrencyAmount } from "common/dashboard/types";
 export const customAmount = Symbol("custom amount")
 
 export interface ITipOptionProps {
-    onClick: () => void,
+    onClick?: () => void,
     emoji: string;
     label: string;
     selected?: boolean;

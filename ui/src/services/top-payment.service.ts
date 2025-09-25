@@ -1,16 +1,21 @@
-import type { ITipPyamentBody as IPerformPaymentBodyComplete } from 'common/dashboard/types'
+import type { ITipPaymentBody as IPerformPaymentBodyComplete } from 'common/dashboard/types'
 
 export type IPerformPaymentBody = Omit<IPerformPaymentBodyComplete, "tokenId">
 
 
-export const tipPayment = (body: IPerformPaymentBodyComplete) => {
-    return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/tip/payment`, {
+export const tipPayment = async (body: IPerformPaymentBodyComplete) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/tip/payment`, {
         body: JSON.stringify(body),
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         }
     })
+
+
+    if (!response.ok) {
+        
+    }
 }
 
 

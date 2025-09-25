@@ -7,7 +7,7 @@ import { Shift4Context } from "./Shift4Context";
 
 
 
-export default function PayWithCardlayout({
+export default function PayWithCardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;

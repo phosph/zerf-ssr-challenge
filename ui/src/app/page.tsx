@@ -1,95 +1,76 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import { CustomAmountDialog } from '@/components/ui/custom-amount-dialog'
+import TipOption, { customAmount, type ITipOptionProps } from '@/components/ui/TipOption'
+import { currencyFromNaturalNumber } from 'common/currency-utils.js'
+import type { CurrencyAmount } from 'common/dashboard/types'
+import { useRouter } from 'next/navigation'
+import { StrictMode, useState } from 'react'
+import PaymentButtons from '../components/payment/PaymentButtons'
+import GreetingsHeader from '../components/ui/GreetingsHeader'
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+
+type IAmountOption = Pick<ITipOptionProps, 'label' | 'amount' | 'emoji'>
+
+const options: IAmountOption[] = [
+    {
+        label: "Good",
+        emoji: '/emoji-good.png',
+        amount: currencyFromNaturalNumber(5)
+    },
+    {
+        label: "Great",
+        emoji: '/emoji-great.png',
+        amount: currencyFromNaturalNumber(10)
+    },
+    {
+        label: "Excellent",
+        emoji: '/emoji-excellent.png',
+        amount: currencyFromNaturalNumber(15)
+    },
+    {
+        label: "Custom",
+        emoji: '/emoji-custom.png',
+        amount: customAmount
+    },
+]
+
+export default function SelectTip() {
+    const router = useRouter()
+
+
+    const [amount, setAmount] = useState<CurrencyAmount | null>(null)
+    const days = 6;
+    const totalAmount: CurrencyAmount | null = amount ? amount * days : null;
+
+    return (
+        <StrictMode>
+            <GreetingsHeader days={days} />
+            <ul className="flex flex-col gap-2 p-4">
+                {options.map((opt, index) => {
+
+                    if (opt.amount === customAmount) {
+                        return (
+                            <CustomAmountDialog key={index} currentValue={amount} onSubmit={setAmount}>
+                                <TipOption
+                                    // selected={amount === opt.amount}
+                                    {...opt}
+                                />
+                            </CustomAmountDialog>
+                        )
+                    }
+
+                    return (
+                        <TipOption
+                            key={index}
+                            onClick={() => setAmount(opt.amount as number)}
+                            selected={amount === opt.amount}
+                            {...opt}
+                        />
+                    )
+                })}
+            </ul>
+            <PaymentButtons showApplePayButton amount={totalAmount} onPayWithCard={() => router.push("pay-with-card")} />
+        </StrictMode>
+    )
 }
