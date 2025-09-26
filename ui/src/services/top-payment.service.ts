@@ -14,8 +14,10 @@ export const tipPayment = async (body: IPerformPaymentBodyComplete) => {
 
 
     if (!response.ok) {
-        
+        throw await response.json()
     }
+
+    return response.json()
 }
 
 
