@@ -24,9 +24,11 @@ export default fp(async function appModule(appInstance) {
     appInstance.register(wsPlugin);
     appInstance.decorate('wsManager', webSocketManager);
 
-    appInstance.register(pgFastify, {
-        connectionString: appInstance.config.DATABASE_URL,
-    })
+    if (process.env.IS_TEST !== 'true') {
+        appInstance.register(pgFastify, {
+            connectionString: appInstance.config.DATABASE_URL,
+        })
+    }
 
     appInstance.register(paymentRoutes)
     appInstance.register(dashboardRoutes)

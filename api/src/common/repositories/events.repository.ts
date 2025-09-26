@@ -30,11 +30,11 @@ export class EventsRepository {
     async registerUnprocessedEvent(eventExternalId: string): Promise<{
         alreadyRegistered: boolean
     }> {
-        const { rowCount } = await this.#db.query(`
-            SELECT EXISTS(SELECT 1 FROM your_table WHERE your_condition);
-        `)
+        const { rows: [{ exists }] } = await this.#db.query<{ exists: boolean }>(`
+            SELECT EXISTS(SELECT 1 FROM events WHERE event_external_id = $1)
+        `, [eventExternalId])
 
-        if (rowCount !== null && rowCount > 0)
+        if (exists)
             return { alreadyRegistered: true }
 
         await this.#db.query(`

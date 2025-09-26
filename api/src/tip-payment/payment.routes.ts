@@ -1,12 +1,11 @@
 import type { FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
-import type { Env } from '../env.ts';
-import { type ITipPaymentBody, tipPaymentSchema } from './tip-payment-body.schema.ts';
+import { Shift4EventsService } from '../common/Shift4Events.service.ts';
 import { Shift4PaymentService } from '../common/Shift4Payment.service.ts';
 import { ChargesRepository } from '../common/repositories/charges.repository.ts';
-import { request } from 'http';
-import { Shift4EventsService } from '../common/Shift4Events.service.ts';
 import { EventsRepository } from '../common/repositories/events.repository.ts';
+import type { Env } from '../env.ts';
+import { type ITipPaymentBody, tipPaymentSchema } from './tip-payment-body.schema.ts';
 
 export default fp(function paymentRoutesPlugin(appInstance) {
     appInstance.post(

@@ -1,0 +1,31 @@
+{
+  "include": [
+    "./main.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "module": "NodeNext",
+    "erasableSyntaxOnly": true,
+    "strict": true,
+    "target": "es2022",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": [
+      "ES2024"
+    ],
+    "resolveJsonModule": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true
+  },
+  "references": [
+    {
+      "path": "../common/tsconfig.json"
+    }
+  ]
+}

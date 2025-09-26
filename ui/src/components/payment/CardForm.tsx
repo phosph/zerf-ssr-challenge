@@ -2,6 +2,8 @@ import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "reac
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import styles from './CardForm.module.css'
 
+const { default: countries } = await import("../../lib/countries.json")
+
 export interface ICarfFormRef {
     shift4GroupObject: Shift4ComponentGroupObject | null
 }
@@ -9,7 +11,7 @@ export interface ICarfFormRef {
 export default (function CardForm({ shift4Obj, ref }: { shift4Obj: Shift4Object, ref?: Ref<ICarfFormRef | null> }) {
 
     const [groupObj, setGroupObj] = useState<Shift4ComponentGroupObject | null>(null)
-    
+
     useImperativeHandle(ref, (): ICarfFormRef => ({
         shift4GroupObject: groupObj
     }), [groupObj])
@@ -46,18 +48,19 @@ export default (function CardForm({ shift4Obj, ref }: { shift4Obj: Shift4Object,
 
             <div className={`col-span-2 ${styles["form-control-wrapper"]}`}>
                 <label className={styles["control-label"]}>
-                    Security code
+                    Country
                 </label>
 
                 <Select name="country">
                     <SelectTrigger className="w-full border-[#BDC5CB] px-3.5 py-2.5 !h-auto text-base">
-                        <SelectValue placeholder="Theme" />
+                        <SelectValue placeholder="Select a Country" />
                     </SelectTrigger>
                     <SelectContent>
-                        {/* TODO */}
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
+                        {countries.map((country) => (
+                            <SelectItem key={country.name} value={country.Iso3}>
+                                {country.name}
+                            </SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
             </div>

@@ -28,7 +28,7 @@ export class ChargesRepository {
     }
     async updateCharge(charge: ICharge): Promise<number> {
         const { rows: [{ id }] } = await this.#db.query<{ id: number }>(`
-            update charges
+            UPDATE charges
             SET
                 charge_external_id = $1,
                 amount = $2,
@@ -49,11 +49,11 @@ export class ChargesRepository {
     }
 
     async chargeIsRegistered(externalChargeId: string): Promise<boolean> {
-        const { rowCount } = await this.#db.query<{ id: number }>(`
+        const { rows: [{ exists }] } = await this.#db.query<{ exists: boolean }>(`
             SELECT EXISTS(SELECT 1 FROM charges WHERE charge_external_id = $1)
         `, [externalChargeId])
 
-        return rowCount !== null && rowCount > 0
+        return exists
     }
 
     async getSummarizedStats(filters: DashboardFilters): Promise<SummarizedTipsStats> {

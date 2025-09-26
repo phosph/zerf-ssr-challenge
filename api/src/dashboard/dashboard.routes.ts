@@ -5,7 +5,9 @@ import { createDashboardUpdateCronTask } from './dashboardUpdateCronTask.ts';
 import { PaymentStatsService } from './payment-stats.service.ts';
 
 export default fp(function dashboardRoutesPlugin(appInstance) {
-    appInstance.register(fastifySchedule);
+    if (process.env.IS_TEST !== 'true') {
+        appInstance.register(fastifySchedule);
+    }
 
     appInstance.ready().then(() => {
         appInstance.scheduler.addSimpleIntervalJob(createDashboardUpdateCronTask(appInstance.pg, appInstance.wsManager))
@@ -19,7 +21,7 @@ export default fp(function dashboardRoutesPlugin(appInstance) {
         // Send initial stats on connection
         const initialStats = await PaymentStatsService.getInitialStats(appInstance.pg.pool);
         socket.send(JSON.stringify(initialStats));
-        
+
         socket.on('close', () => {
             appInstance.wsManager.removeClient(socket);
             req.log.info('WebSocket client disconnected');
