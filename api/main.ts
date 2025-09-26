@@ -5,12 +5,12 @@ const fastify = Fastify({
   logger: true
 })
 
-await fastify.register(appModule)
-
-// Run the server!
-fastify.listen({ port: fastify.config.PORT }, (err) => {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
+fastify.register(appModule).then(() => {
+    // Run the server!
+    fastify.listen({ port: fastify.config.PORT }, (err) => {
+      if (err) {
+        fastify.log.error(err)
+        process.exit(1)
+      }
+    })
 })
