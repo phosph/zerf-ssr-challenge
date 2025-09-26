@@ -1,13 +1,6 @@
 import type { AverageTipsSet, AverageTipsSetFilters, CommonTipsStatsFilters, DashboardFilters, ICharge, SummarizedTipsStats, TipsPercentageByPaymentType } from "common/dashboard/types";
-import { endOfDay, startOfDay, subDays } from "date-fns";
 import type { Pool, PoolClient } from "pg";
 
-
-export const DefaultStatsCommonFilters = (): CommonTipsStatsFilters => ({
-    startDate: startOfDay(subDays(new Date(), 7)).toISOString(),
-    endDate: endOfDay(new Date()).toISOString(),
-    status: ["successful"]
-})
 
 export class ChargesRepository {
     readonly #db: Pool | PoolClient

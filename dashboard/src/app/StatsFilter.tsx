@@ -2,12 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { DashboardFilters } from "@/hooks/use-realtime-stats";
 import { Close, Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { endOfDay, endOfWeek, endOfYear, isSunday, parseISO, previousSunday, startOfDay, startOfWeek, startOfYear, subDays, subWeeks, subYears } from 'date-fns';
+import { endOfDay, endOfWeek, endOfYear, isSunday, parseISO, parseJSON, previousSunday, startOfDay, startOfWeek, startOfYear, subDays, subWeeks, subYears, format as formatDate } from 'date-fns';
 import { Calendar as CalendarIcon } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 
-export function StatsFilter({ onFilterChange, currentFilters }: { onFilterChange: (filters: DashboardFilters | null) => void, currentFilters?: DashboardFilters | null }) {
+export function StatsFilter({ onFilterChange, currentFilters }: { onFilterChange: (filters: DashboardFilters) => void, currentFilters: DashboardFilters }) {
+
+    const str = useMemo((): string => {
+        let { startDate, endDate } = currentFilters
+
+        startDate = formatDate(parseJSON(startDate), "LL dd, yyyy")
+        endDate = endDate ? formatDate(parseJSON(endDate), "LL dd, yyyy") : "now"
+
+        return `${startDate} - ${endDate}`
+    }, [currentFilters])
 
     return (
         <div className="flex gap-3 items-center">
@@ -21,8 +30,7 @@ export function StatsFilter({ onFilterChange, currentFilters }: { onFilterChange
                     <StatsFilterPopover onFilterChange={onFilterChange} currentFilters={currentFilters} />
                 </PopoverContent>
             </Popover>
-            <p className="leading-none align-middle text-[#2F363C] font-medium text-base">Last 7 Days:</p>
-            <p className="leading-none align-middle text-[#2F363C] text-sm">Jul 22 - Jul 27, 2025</p>
+            <p className="leading-none align-middle text-[#2F363C] text-sm">{str}</p>
         </div>
     )
 }
@@ -87,7 +95,7 @@ const predefinedFilterOptions = [
 
 ]
 
-function StatsFilterPopover({ onFilterChange, currentFilters }: { onFilterChange: (filters: DashboardFilters | null) => void, currentFilters?: DashboardFilters | null }) {
+function StatsFilterPopover({ onFilterChange, currentFilters }: { onFilterChange: (filters: DashboardFilters) => void, currentFilters?: DashboardFilters | null }) {
     const [dateRange, setDateRange] = useState<DateRange | undefined>(
         () => {
             if (!currentFilters) return predefinedFilterOptions[4].value();

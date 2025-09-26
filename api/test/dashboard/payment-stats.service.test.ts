@@ -2,9 +2,9 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { strict as assert } from 'node:assert';
 import * as sinon from 'sinon';
 import type { Pool } from 'pg';
-import { ChargesRepository, DefaultStatsCommonFilters } from '../../src/common/repositories/charges.repository.ts';
+import { ChargesRepository } from '../../src/common/repositories/charges.repository.ts';
 import { PaymentStatsService } from '../../src/dashboard/payment-stats.service.ts';
-import type { AverageTipsSet, DashboardFilters, SummarizedTipsStats, TipsPercentageByPaymentType } from 'common/dashboard/types';
+import { DefaultStatsCommonFilters, type AverageTipsSet, type DashboardFilters, type SummarizedTipsStats, type TipsPercentageByPaymentType } from 'common/dashboard/types';
 
 describe('PaymentStatsService', () => {
   let mockChargesRepo: sinon.SinonStubbedInstance<ChargesRepository>;

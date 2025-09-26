@@ -1,3 +1,5 @@
+import { endOfDay, startOfDay, subDays } from "date-fns";
+
 export interface ICharge {
     id?: number;
     chargeExternalId: string
@@ -64,3 +66,10 @@ export interface ITipPaymentBody {
     country: string;
     amount: CurrencyAmount;
 }
+
+
+export const DefaultStatsCommonFilters = (): CommonTipsStatsFilters => ({
+    startDate: startOfDay(subDays(new Date(), 7)).toISOString(),
+    endDate: endOfDay(new Date()).toISOString(),
+    status: ["successful"],
+})

@@ -1,6 +1,6 @@
-import type { DashboardFilters, PaymentStats } from "common/dashboard/types";
+import { DefaultStatsCommonFilters, type DashboardFilters, type PaymentStats } from "common/dashboard/types";
 import type { Pool } from "pg";
-import { ChargesRepository, DefaultStatsCommonFilters } from "../common/repositories/charges.repository.ts";
+import { ChargesRepository } from "../common/repositories/charges.repository.ts";
 
 export class PaymentStatsService {
     readonly #chargesRepository: ChargesRepository

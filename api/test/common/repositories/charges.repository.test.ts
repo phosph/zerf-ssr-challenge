@@ -1,9 +1,10 @@
-import { describe, it, beforeEach, afterEach } from 'mocha';
-import { strict as assert } from 'node:assert';
-import * as sinon from 'sinon';
-import type { PoolClient } from 'pg';
-import { ChargesRepository, DefaultStatsCommonFilters } from '../../../src/common/repositories/charges.repository.ts';
 import type { ICharge } from 'common/dashboard/types';
+import { DefaultStatsCommonFilters } from "common/dashboard/types";
+import { afterEach, beforeEach, describe, it } from 'mocha';
+import { strict as assert } from 'node:assert';
+import type { PoolClient } from 'pg';
+import * as sinon from 'sinon';
+import { ChargesRepository } from '../../../src/common/repositories/charges.repository.ts';
 
 describe('ChargesRepository', () => {
     let mockDbClient: { query: sinon.SinonStub };

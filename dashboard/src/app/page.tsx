@@ -8,9 +8,10 @@ import { AverageTipChart } from "./AverageTipChart";
 import { PaymentMethodsChart } from "./PaymentMethodsChart";
 import { StatsFilter } from "./StatsFilter";
 import { currencyFormat } from "common/currency-utils.js";
+import { DefaultStatsCommonFilters } from "common/dashboard/types";
 
 export default function DashboardPage() {
-    const [filters, setFilters] = useState<DashboardFilters | null>(null)
+    const [filters, setFilters] = useState<DashboardFilters>(() => DefaultStatsCommonFilters())
     const stats = useRealtimeStats(filters)
 
     return (

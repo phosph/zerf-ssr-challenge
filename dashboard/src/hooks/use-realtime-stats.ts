@@ -9,12 +9,14 @@ export { type DashboardFilters };
 export function useRealtimeStats(filters: DashboardFilters | null) {
     const [stats, setStats] = useState<PaymentStats | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
+    const [ready, setReady] = useState<boolean>(false);
 
     useEffect(() => {
         const ws = new WebSocket(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/dashboard/ws`);
 
         ws.addEventListener('open', () => {
             console.log('WebSocket connection established');
+            setReady(true)
         });
 
         ws.addEventListener('message', (event: MessageEvent<string>) => {
@@ -40,11 +42,11 @@ export function useRealtimeStats(filters: DashboardFilters | null) {
     }, []);
 
     useEffect(() => {
-        if (socket && filters) {
+        if (socket && ready && filters) {
             console.log('Sending filters:', filters);
             socket.send(JSON.stringify(filters));
         }
-    }, [socket, filters])
+    }, [socket, filters, ready])
 
     return stats;
 }

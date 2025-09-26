@@ -8,5 +8,10 @@
     "noEmit": true,
     "rootDir": "./",
     "sourceMap": true
-  }
+  },
+  "references": [
+    {
+      "path": "../common/tsconfig.json"
+    }
+  ]
 }
