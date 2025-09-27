@@ -4,7 +4,6 @@ export interface IGreetingsHeaderProps {
     days: number
 }
 
-/** @deprecated reemplazar por versión inline */
 export default function GreetingsHeader({ days }: IGreetingsHeaderProps) {
     return (
         <header className="flex flex-col gap-2.5 items-center px-4 pt-2">

@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zerf SSR Challenge - UI
+
+This package contains the public-facing mobile UI for the Zerf SSR Challenge. It is a Next.js application designed for end-users to make tip payments.
 
 ## Getting Started
 
-First, run the development server:
+To run this application locally, ensure you have followed the setup instructions in the root `README.md`.
 
+### Prerequisites
+
+*   All monorepo dependencies installed via `pnpm install` in the root directory.
+*   The API service must be running, as this UI makes requests to it.
+
+### Environment Configuration
+
+This project requires a local environment file to function correctly.
+
+1.  In the `ui/` directory, create a `.env.local` file by copying the example:
+    ```bash
+    cp .env.example .env.local
+    ```
+2.  Open `.env.local` and fill in the required values:
+    *   `NEXT_PUBLIC_SHIFT4_PUBLIC_KEY`: Your public key from the Shift4 payment provider.
+    *   `NEXT_PUBLIC_API_ENDPOINT`: The URL where the backend API is running (e.g., `http://localhost:3001`).
+
+### Running the Development Server
+
+You can run the development server from the root of the monorepo:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm --filter zerf-ssr-challenge-ui dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Alternatively, you can run it directly from the `ui/` directory:
+```bash
+pnpm dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application will be available at `http://localhost:3000`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Core Technologies
 
-## Learn More
+*   **Framework**: Next.js (with Turbopack)
+*   **Styling**: Tailwind CSS
+*   **UI Components**: Radix UI
+*   **State Management**: Zustand
+*   **Shared Code**: Consumes the `common` workspace package for types and utilities.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

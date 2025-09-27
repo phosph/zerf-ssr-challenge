@@ -5,7 +5,7 @@ This directory contains the API for the Zerf SSR Challenge. It is built with [Fa
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
-- Node.js (v22.19.0 o superior)
+- Node.js (v22.19.0 or higher)
 - pnpm
 - PostgreSQL
 
@@ -68,9 +68,56 @@ pnpm graphile-migrate reset --erase-db-from-scratch
 
 Your database is now ready for development. To apply future migrations, you can simply run `pnpm db-migrate`.
 
+## Running with Docker
+
+You can also build and run the API using Docker. This is the recommended way to ensure a consistent environment
+
+### Manual Build and Run
+
+1.  **Build the Docker image** from the **monorepo root**:
+    ```bash
+    docker build -t zerf-api -f api/Dockerfile .
+    ```
+2.  **Run the container**. Make sure your `api/.env` file points to a running PostgreSQL database.
+    ```bash
+    docker run -d -p 3001:3001 --env-file api/.env --name zerf-api-container zerf-api
+    ```
+
 ## Available Scripts
 
 You can run the following scripts from the `/api` directory:
+
+| Script | Description |
+| :--- | :--- |
+| `pnpm dev` | Starts the development server. |
+| `pnpm build` | Compiles the TypeScript project to JavaScript for production in the `dist/` directory. |
+| `pnpm test` | Runs the unit and integration tests using Mocha. |
+| `pnpm test:coverage` | Runs the tests and generates a code coverage report. |
+| `pnpm db-migrate` | Applies pending database migrations using Graphile Migrate. |
+| `pnpm graphile-migrate ...` | Allows running specific Graphile Migrate commands (e.g., `pnpm graphile-migrate create <migration_name>`). |
+
+### Database Migrations
+
+Database migrations are managed with **Graphile Migrate**.
+
+To create a new migration:
+```bash
+pnpm graphile-migrate create my-new-migration
+```
+
+Para aplicar todas las migraciones pendientes a la base de datos:
+```bash
+pnpm db-migrate
+```
+
+## Tecnologías Principales
+
+- **Framework:** Fastify
+- **Base de Datos:** PostgreSQL
+- **ORM/Cliente DB:** node-postgres (pg)
+- **Migraciones:** Graphile Migrate
+- **Testing:** Mocha
+- **Bundler:** esbuild
 
 | Script | Description |
 | :--- | :--- |
